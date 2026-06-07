@@ -11,6 +11,8 @@
 
 <!-- What domain did you choose? Why is this knowledge valuable and hard to find through official channels? -->
 
+Domain: CS course and professor reviews at George Mason University. 
+The majority of students make decisions like choosing which course to take and which professor to take based on course difficulty, relevance to their goals, professor's teaching style, grading style, and reputation amongst those who have previously been in their class. Not having this information easily accessible makes registering for classes a stressful process. This kind of experience that only students can provide is hard to find through official university pages, because only course, course descriptions, and professors who are teaching in that particular semester are published. 
 ---
 
 ## Documents
@@ -20,16 +22,16 @@
 
 | # | Source | Description | URL or location |
 |---|--------|-------------|-----------------|
-| 1 | | | |
-| 2 | | | |
-| 3 | | | |
-| 4 | | | |
-| 5 | | | |
-| 6 | | | |
-| 7 | | | |
-| 8 | | | |
-| 9 | | | |
-| 10 | | | |
+| 1 | r/gmu thread |Recommended CS professors and CS professors to avoid |https://www.reddit.com/r/gmu/comments/1cnjd7v/im_graduating_here_are_some_professors_to_stay/
+| 2 | r/gmu thread |CS courses students found most enjoyable and least enjoyable |https://www.reddit.com/r/gmu/comments/lq2b0x/for_cs_majors_which_cs_class_have_you_enjoyed_the/
+| 3 | Rate my professor George Mason University |The rate my professor page for George Mason University | https://www.ratemyprofessors.com/school/352
+| 4 | r/gmu thread |Advice for approaching difficulty of CS classes| https://www.reddit.com/r/gmu/comments/125fkhn/cs_advice/
+| 5 | r/gmu thread |Details about CS 310 (a data structures course) |https://www.reddit.com/r/gmu/comments/1gzxnfm/cs_310_russell/
+| 6 | r/gmu thread |Easiest senior CS electives |https://www.reddit.com/r/gmu/comments/jiqwa6/easiest_cs_senior_classes/
+| 7 | r/gmu thread |Advice about specific CS related electives |https://www.reddit.com/r/gmu/comments/9ve2lx/how_are_these_cs_electives_classes/
+| 8 | r/gmu thread |Advice about managing CS course load |https://www.reddit.com/r/gmu/comments/1twm5k5/cs_can_i_manage_these_courses_togather/
+| 9 | r/gmu thread |Information about best CS electives to choose for data science and cybersecurity |https://www.reddit.com/r/gmu/comments/150e28r/best_electives_for_a_cs_major_to_focus_on_data/
+| 10 | r/gmu thread |CS courses that have the most work load |https://www.reddit.com/r/gmu/comments/10qyv95/cs_students_what_are_some_of_the_classes_that/
 
 ---
 
@@ -40,11 +42,12 @@
      numbers fit the structure of your documents.
      A review-heavy corpus warrants different chunking than a long FAQ. -->
 
-**Chunk size:**
+**Chunk size:** approximately 300 tokens
 
-**Overlap:**
 
-**Reasoning:**
+**Overlap:** around 10% of the overlap
+
+**Reasoning:** The chunk size is enough for the model to target a specific section of the reviews but also retain meaning. The overlap size mitigates the issue of loss of meaning across chunks. 
 
 ---
 
@@ -56,7 +59,7 @@
      would you weigh in choosing a different embedding model — context length, multilingual
      support, accuracy on domain-specific text, latency? -->
 
-**Embedding model:**
+**Embedding model:** 
 
 **Top-k:**
 
