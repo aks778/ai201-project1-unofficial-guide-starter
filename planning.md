@@ -59,11 +59,11 @@ The majority of students make decisions like choosing which course to take and w
      would you weigh in choosing a different embedding model — context length, multilingual
      support, accuracy on domain-specific text, latency? -->
 
-**Embedding model:** 
+**Embedding model:** all-MiniLM-L6-v2
 
-**Top-k:**
+**Top-k:** k = 4
 
-**Production tradeoff reflection:**
+**Production tradeoff reflection:** If cost wasn't a constraint, I would choose an embedding model that's faster, and which can handle longer chunks of text, while preserving semantic matching. However, a stronger model can provide more relevant and accurate answer, at the cost of poor response time.
 
 ---
 
@@ -76,11 +76,11 @@ The majority of students make decisions like choosing which course to take and w
 
 | # | Question | Expected answer |
 |---|----------|-----------------|
-| 1 | | |
-| 2 | | |
-| 3 | | |
-| 4 | | |
-| 5 | | |
+| 1 |Which CS professors do students recommend taking classes with at GMU and for what reasons?| Kevin Andrea is great for taking C programming courses with and his exams are very fair. Dr. Ivan Avramovic provides support in office hours, slides are very put together, and the exams are fair. Dr. Mark Snyder is approachable, provides a lot of support. |
+| 2 |What advice do students give for managing a heavy CS course load at GMU?|Students say to regularly attend lectures, attend office hours if something is not clear, try to think through problems more than once, and skim readings before attending lectures. |
+| 3 |What CS electives should someone interested in data science take at GMU?|Students say CS 484 is a good choice for someone interested in data science as it teaches the algorithms and techniques used in data science. CS 499 is also recommended. It is a deep learning course which teaches skills that are very relevant to the industry.|
+| 4 |What are some of the CS courses that students found difficult and why did they find them hard?|Many students say CS 310 is a hard class because it is a project heavy course which makes it difficult and time consuming. Some also say CS 330 picks up pace very quickly. Homework and quizzes are time consuming and are harder than examples from the class.|
+| 5 |Which CS professors do students say to avoid at GMU?|A lot of students say to avoid Sapna Gambhir because they felt her assignments lacked clarity and caused confusion, including the fact that her lectures weren't engaging and she did not respond to student questions. Some people also say to avoid Gonzales as a lot of students failed his class.|
 
 ---
 
@@ -90,9 +90,9 @@ The majority of students make decisions like choosing which course to take and w
      Consider: noisy or inconsistent documents, missing source attribution, off-topic
      retrieval, chunks that split key information across boundaries. -->
 
-1.
+1. If a chunk has a lot of noise, the model may return chunks that are not entirely relevant to what the user is asking.
 
-2.
+2. If a user's opinion is split across chunks, the meaning might be lost or be incomplete, causing the LLM to provide an answer that may not have the information the user is looking for. 
 
 ---
 
@@ -103,6 +103,8 @@ The majority of students make decisions like choosing which course to take and w
      Label each stage with the tool or library you're using.
      You can use ASCII art, a Mermaid diagram, or embed a sketch as an image.
      You'll use this diagram as context when prompting AI tools to implement each stage. -->
+
+![Pipeline diagram](assets/pipeline.png)
 
 ---
 
@@ -118,8 +120,9 @@ The majority of students make decisions like choosing which course to take and w
      "I'll give Claude my Chunking Strategy section and ask it to implement chunk_text()
      with my specified chunk size and overlap" is a plan. -->
 
-**Milestone 3 — Ingestion and chunking:**
+**Milestone 3 — Ingestion and chunking:** I'll give Claude my chunking strategy instructions of 300 tokens and the overlap size and ask it to implement that part. I expect it to give me a function that reads the text and splits it recursively into chunks. I'll verify it by checking the chunk size and whether overlap exists.
 
-**Milestone 4 — Embedding and retrieval:**
+**Milestone 4 — Embedding and retrieval:** I'll provide Claude with the retrieval section, which has the model I'll use and the top k, and ChromaDB as the vector database. I expect it to give me code that embeds each chunk using the embedding model and store them in ChromaDB, after which it should return the top 4 chunks after the semantic search. I'll verify it by running a query to check if the chunks that are returned are relevant.
 
-**Milestone 5 — Generation and interface:**
+**Milestone 5 — Generation and interface:** I'll provide Claude with the user query and the retrieved chunks. I expect it to give me a function that takes in the query and the top k chunks and returns a final answer that is grounded in those chunks. I will ask for a prompt template that instructs the model to answer using only the retrieved context. I will verify it by testing sample questions from the evaluation plan and checking that the responses stay relevant and supported by the retrieved chunks.
+
