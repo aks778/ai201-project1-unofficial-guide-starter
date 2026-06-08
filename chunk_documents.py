@@ -1,6 +1,7 @@
 import html
 import json
 import re
+import unicodedata
 from pathlib import Path
 from typing import List, Dict, Optional
 
@@ -76,12 +77,42 @@ def safe_filename(source: str) -> str:
     return name[:120].strip("_")
 
 
+# Map common "smart"/typographic punctuation to plain ASCII equivalents.
+PUNCTUATION_MAP = {
+    "‘": "'", "’": "'", "‚": "'", "‛": "'",  # single quotes
+    "“": '"', "”": '"', "„": '"', "‟": '"',  # double quotes
+    "′": "'", "″": '"',                                # primes
+    "–": "-", "—": "-", "―": "-",                 # en/em dashes
+    "…": "...",                                             # ellipsis
+    "•": "-",                                               # bullet
+    " ": " ",                                              # non-breaking space
+}
+PUNCTUATION_TABLE = {ord(key): value for key, value in PUNCTUATION_MAP.items()}
+
+
 def normalize_entities(text: str) -> str:
     # Decode HTML entities (incl. numeric ones like &#225; -> á) rather than
-    # stripping them, so accented names and symbols survive intact.
+    # stripping them, so accented names survive intact.
     text = html.unescape(text)
-    text = text.replace("\xa0", " ")
-    return text
+    # Normalize "smart" typographic punctuation to plain ASCII so chunks render
+    # consistently and don't appear as mojibake (e.g. curly ' -> ').
+    text = text.translate(PUNCTUATION_TABLE)
+    # Keep ASCII plus real letters/marks/numbers (incl. accented like á);
+    # drop emoji, pictographs, and stray symbols that add no semantic value.
+    kept = []
+    for ch in text:
+        if ord(ch) < 128:
+            kept.append(ch)
+        elif unicodedata.category(ch)[0] in ("L", "M", "N") and not _is_variation_selector(ch):
+            kept.append(ch)  # keep letters, accents, numbers
+    return "".join(kept)
+
+
+def _is_variation_selector(ch: str) -> bool:
+    # Invisible emoji variation selectors (e.g. U+FE0F) are marks, so exclude
+    # them explicitly even though their Unicode category is kept above.
+    code = ord(ch)
+    return 0xFE00 <= code <= 0xFE0F or 0xE0100 <= code <= 0xE01EF
 
 
 def clean_text(text: str) -> str:
@@ -114,7 +145,7 @@ def remove_boilerplate(text: str) -> str:
     return "\n".join(filtered)
 
 
-def fetch_reddit_raw_text(url: str) -> Optional[str]:
+def fetch_reddit_raw_text(url: str) -> Optional[Dict[str, str]]:
     old_url = re.sub(r"https?://(www\.)?reddit\.com",
                      "https://old.reddit.com", url)
     try:
@@ -127,19 +158,21 @@ def fetch_reddit_raw_text(url: str) -> Optional[str]:
     soup = BeautifulSoup(response.text, "html.parser")
     pieces = []
 
-    # Keep the post (title + body) together as one content unit; each comment
-    # is its own unit. These become the segment boundaries the chunker respects.
-    post_parts = []
-    title = soup.select_one("a.title")
-    if title:
-        post_parts.append(title.get_text(separator=" ", strip=True))
+    # The title is the document's display name and is carried into chunk
+    # metadata. It is NOT baked into the body here: the embedding step prepends
+    # it to *every* chunk as context, so keeping it out of the body avoids
+    # double-counting it on the first chunk.
+    title_el = soup.select_one("a.title")
+    title = title_el.get_text(separator=" ", strip=True) if title_el else ""
+    title = clean_text(normalize_entities(title))
 
+    # The post body is one content unit; each comment is its own unit. These
+    # become the segment boundaries the chunker respects.
     selftext = soup.select_one("div.expando div.usertext-body div.md")
     if selftext:
-        post_parts.append(selftext.get_text(separator=" ", strip=True))
-
-    if post_parts:
-        pieces.append(" ".join(post_parts))
+        body = selftext.get_text(separator=" ", strip=True)
+        if body:
+            pieces.append(body)
 
     comment_nodes = soup.select(
         "div.comment div.entry div.usertext-body div.md")
@@ -149,12 +182,12 @@ def fetch_reddit_raw_text(url: str) -> Optional[str]:
             pieces.append(comment_text)
 
     if not pieces:
-        return extract_raw_text(url, response.text)
+        return {"text": extract_raw_text(url, response.text), "title": title}
 
     raw = "\n\n".join(pieces)
     raw = normalize_entities(raw)
     raw = re.sub(r"\n{3,}", "\n\n", raw)
-    return raw.strip()
+    return {"text": raw.strip(), "title": title}
 
 
 def extract_raw_text(url: str, html: str) -> str:
@@ -184,11 +217,11 @@ def extract_raw_text(url: str, html: str) -> str:
     return raw.strip()
 
 
-def fetch_raw_text(url: str) -> Optional[str]:
+def fetch_raw_text(url: str) -> Optional[Dict[str, str]]:
     if "reddit.com" in url:
-        raw = fetch_reddit_raw_text(url)
-        if raw:
-            return raw
+        result = fetch_reddit_raw_text(url)
+        if result and result.get("text"):
+            return result
 
     try:
         response = requests.get(url, headers=HEADERS, timeout=25)
@@ -196,7 +229,11 @@ def fetch_raw_text(url: str) -> Optional[str]:
     except Exception as exc:
         print(f"Warning: failed to fetch {url}: {exc}")
         return None
-    return extract_raw_text(url, response.text)
+
+    soup = BeautifulSoup(response.text, "html.parser")
+    title = soup.title.get_text(strip=True) if soup.title else ""
+    title = clean_text(normalize_entities(title))
+    return {"text": extract_raw_text(url, response.text), "title": title}
 
 
 def save_text(path: Path, text: str) -> None:
@@ -353,6 +390,7 @@ def build_chunks_from_documents(documents: List[Dict[str, str]]) -> List[Dict[st
             all_chunks.append(
                 {
                     "source": doc["source"],
+                    "title": doc.get("title", doc["source"]),
                     "chunk_id": f"doc{doc_index}_chunk{chunk_index}",
                     "text": chunk,
                     "chunk_size_tokens": len(tokenize(chunk)),
@@ -387,20 +425,24 @@ def main() -> None:
             cleaned = clean_document(doc["raw_text"])
             clean_path = CLEAN_DIR / (safe_filename(doc["source"]) + ".txt")
             save_text(clean_path, cleaned)
-            documents.append({"source": doc["source"], "clean_text": cleaned})
+            title = Path(doc["source"]).stem
+            documents.append(
+                {"source": doc["source"], "title": title, "clean_text": cleaned})
 
     for url in DOCUMENT_SOURCES:
         print(f"Fetching {url}")
-        raw_text = fetch_raw_text(url)
-        if not raw_text:
+        result = fetch_raw_text(url)
+        if not result or not result.get("text"):
             continue
+        raw_text = result["text"]
+        title = result.get("title") or url
         source_name = safe_filename(url)
         raw_path = RAW_DIR / (source_name + ".txt")
         save_text(raw_path, raw_text)
         cleaned = clean_document(raw_text)
         clean_path = CLEAN_DIR / (source_name + ".txt")
         save_text(clean_path, cleaned)
-        documents.append({"source": url, "clean_text": cleaned})
+        documents.append({"source": url, "title": title, "clean_text": cleaned})
 
     if not documents:
         print("No documents were loaded. Exiting.")
