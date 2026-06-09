@@ -24,7 +24,7 @@ The majority of students make decisions like choosing which course to take and w
 |---|--------|-------------|-----------------|
 | 1 | r/gmu thread |Recommended CS professors and CS professors to avoid |https://www.reddit.com/r/gmu/comments/1cnjd7v/im_graduating_here_are_some_professors_to_stay/
 | 2 | r/gmu thread |CS courses students found most enjoyable and least enjoyable |https://www.reddit.com/r/gmu/comments/lq2b0x/for_cs_majors_which_cs_class_have_you_enjoyed_the/
-| 3 | Rate my professor George Mason University |The rate my professor page for George Mason University | https://www.ratemyprofessors.com/school/352
+| 3 | r/gmu thread |Advice on whether students should take CS 450 or CS 468 | https://www.reddit.com/r/gmu/comments/hrb9ji/cs_majors_cs_450_databases_vs_cs_468_secure/
 | 4 | r/gmu thread |Advice for approaching difficulty of CS classes| https://www.reddit.com/r/gmu/comments/125fkhn/cs_advice/
 | 5 | r/gmu thread |Details about CS 310 (a data structures course) |https://www.reddit.com/r/gmu/comments/1gzxnfm/cs_310_russell/
 | 6 | r/gmu thread |Easiest senior CS electives |https://www.reddit.com/r/gmu/comments/jiqwa6/easiest_cs_senior_classes/
@@ -63,7 +63,7 @@ The majority of students make decisions like choosing which course to take and w
 
 **Top-k:** k = 4
 
-**Production tradeoff reflection:** If cost wasn't a constraint, I would choose an embedding model that's faster, and which can handle longer chunks of text, while preserving semantic matching. However, a stronger model can provide more relevant and accurate answer, at the cost of poor response time.
+**Production tradeoff reflection:** If cost wasn't a constraint, I would choose an embedding model that's faster, and which can handle longer chunks of text, while preserving semantic matching. However, a stronger model can provide more relevant and accurate answers, at the cost of poor response time.
 
 ---
 
@@ -80,7 +80,7 @@ The majority of students make decisions like choosing which course to take and w
 | 2 |What advice do students give for managing a heavy CS course load at GMU?|Students say to regularly attend lectures, attend office hours if something is not clear, try to think through problems more than once, and skim readings before attending lectures. |
 | 3 |What CS electives should someone interested in data science take at GMU?|Students say CS 484 is a good choice for someone interested in data science as it teaches the algorithms and techniques used in data science. CS 499 is also recommended. It is a deep learning course which teaches skills that are very relevant to the industry.|
 | 4 |What are some of the CS courses that students found difficult and why did they find them hard?|Many students say CS 310 is a hard class because it is a project heavy course which makes it difficult and time consuming. Some also say CS 330 picks up pace very quickly. Homework and quizzes are time consuming and are harder than examples from the class.|
-| 5 |Which CS professors do students say to avoid at GMU?|A lot of students say to avoid Sapna Gambhir because they felt her assignments lacked clarity and caused confusion, including the fact that her lectures weren't engaging and she did not respond to student questions. Some people also say to avoid Gonzales as a lot of students failed his class.|
+| 5 |Which CS professors do students say to avoid at GMU?|Many students say to avoid taking freshman level classes with Professor Socrates. A lot of students say to avoid Sapna Gambhir because they felt her assignments lacked clarity and caused confusion, including the fact that her lectures weren't engaging and she did not respond to student questions. Some people also say to avoid Gonzales as a lot of students failed his class.|
 
 ---
 
