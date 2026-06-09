@@ -1,0 +1,19 @@
+How was the class? How many projects were there? How important is the textbook?
+Tough class, tougher exams, but fair. 4 projects, Textbook is a good supplement, but not necessary IMO.
+I'd rather the class be fair than unhinged like others I've experienced. Is textbook reading a requirement like in 211 and 112? I know those classes have zybooks and this one is physical but still.
+I mean, you'll always have assigned readings to accompany relevant topics but unlike 211 and 112, you're not graded on it. You'll get participation quizzes/assignments but it won't be on something you haven't seen in class.
+How to succeed is as simple as the following: Do your absolute best to score upper 80s or 90s in all projects.
+Is there a tester like there was in 112?
+Sorry. What do you mean by tester?
+That pretty much answers it for me lol. In CS 112 there was a program that ran your code to check if you did it by the instructions and scored it so you pretty much knew your grade before it was actually graded. Guess I was a little optimistic in assuming it'll be in later classes too.
+There are tester programs for the projects as of recent, but you're right in that they start getting less and less exhaustive. Several 400-level class will have projects where you'll be entirely responsible for testing
+Can attest to this... 455 was absolute hell because of it. 471... you can deal with it, to be honest. It's not the most fun, but it doesn't make or break the class (neither is it the hardest part of the class... those projects are hard enough) Other 400 level classes (i.e. 480) I had the pleasure of getting a full tester for 3 of 4 projects as well as expected output, which did feel a little odd, but you take what you can get, lol.
+Lol well things have changed quite a bit. I didn't have a tester in 310 :)
+No testers, u will be given some input cases, but you will be required to make your own edge cases and thorough understanding of how the data structures work. Pls manage ur time wisely!! I am struggling a lot as of recent- its not surprising to spend 24 or more hours on a project. but yeah someone said to try and score upper 80s-90s thus time management is super crucial. Exams imo are easier than the projects near the end. A lot of people don't show up for lectures because it covers the basics (i think this is not the first time that many are learning data structs). So def learn as much as you can before taking the class because its's really challenging with the pacing and workload as a newcomer
+If you're not comfortable implementing data structures (lists, queues, stacks, trees, etc.), use the textbook, otherwise you're fine.
+Thanks! Guess I should get a head start looking at the textbook then lol.
+textbooks didnt really help imo, what helped the most were her lectures (attend them if u need help, they help clarify + pinpoint a lot of concepts) and the CS310 Structure visualization stuff. It also heavily relies on Java proficiency for the projects, but the exams are fair it is quite difficult if this is ur first exposure to Data structs+algorithims
+It's crazy to me how some people assume me going to lectures isn't a given lol, I'm paying for these classes I'm going to them. I did great in 211 so the Java point shouldn't be a problem, just yknow, the rest of it lmao. It's my first time learning most of this stuff since I'm not a CS major so I'm trying my best to be as prepared as possible before the class starts, thanks for the input!
+You'd be surprised, there's a fair number of classes in the CS department that you can completely skip lectures and still end up with an A.
+Well my goal isn't just getting an A but making the most of my time here, even if that means going to useless lectures lol
+Her exams are very similar to what she goes over in class. If you attend and take notes, the exams are the easy part of the course.
